@@ -1,8 +1,11 @@
 from utils.downloader import download_file
 from utils.metadata import get_metadata, filter_mp4_files, filter_mkv_files
 from config import BASE_URL
+import requests
 
 if __name__ == "__main__":
+
+    
     item_id = "your_item_id_here"
     item_url = f"{BASE_URL}/{item_id}/"
     filter_text = "your_filter_text_here"
