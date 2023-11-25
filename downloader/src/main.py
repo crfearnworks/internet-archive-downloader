@@ -1,45 +1,27 @@
+import os
+from dotenv import load_dotenv
+from loguru import logger
+from utils.parse_web_page import get_url_from_user, get_metadata
+from utils.transformer import build_list_of_videos_mkv, build_list_of_videos_mp4
 from utils.downloader import download_file
-from utils.metadata import get_metadata, filter_mp4_files, filter_mkv_files
-from config import BASE_URL
-import requests
+
+load_dotenv()
+
+ARCHIVE_FOLDER = os.getenv("ARCHIVE_PATH")
+
+def archiver_pipeline():
+    """Download files pipeline from the Internet Archive."""
+    archive_url = get_url_from_user()
+    metadata = get_metadata(archive_url)
+    if any(file['name'].endswith('.mkv') for file in metadata):
+        video_list = build_list_of_videos_mkv(metadata)
+    elif any(file['name'].endswith('.mp4') for file in metadata):
+        video_list = build_list_of_videos_mp4(metadata)
+    else:
+        raise ValueError("No downloadable videos exist in the provided metadata.")
+
+    for video in video_list:
+        download_file(archive_url, video['name'], ARCHIVE_FOLDER)
 
 if __name__ == "__main__":
-
-    
-    item_id = "your_item_id_here"
-    item_url = f"{BASE_URL}/{item_id}/"
-    filter_text = "your_filter_text_here"
-
-    try:
-        metadata = get_metadata(item_id)
-        mp4_files = filter_mp4_files(metadata, filter_text)
-        mk4_files = filter_mkv_files(metadata, filter_text)
-
-        for i, file in enumerate(mp4_files, start=1):
-            file_name = file['name']
-            url = BASE_URL + file_name
-            download_file(url, file_name)
-
-    except requests.RequestException as e:
-        print(f"An error occurred: {e}")    
-
-    # need a chooser here for mp4 or mkv
-    # then need to download the file
-    # then need to convert the file
-    # then need to delete the file
-    # then need to move on to the next file
-
-    # need to add a progress bar
-    # need to add a timer
-    # need to add a counter
-    # need to add a file size
-    # need to add a file name
-    # need to add a file type
-    # need to add a file path
-    # need to add a file duration
-
-
-
-        
-        
-            
+    archiver_pipeline()

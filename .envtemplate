@@ -1,0 +1,2 @@
+BASE_URL = "https://archive.org/download/"
+ARCHIVE_PATH = "archive/"

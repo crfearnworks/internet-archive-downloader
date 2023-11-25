@@ -1,0 +1,5 @@
+tqdm
+httpx
+beautifulsoup4
+loguru
+python-dotenv
