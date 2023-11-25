@@ -3,8 +3,17 @@ import httpx
 from tqdm import tqdm
 from loguru import logger
 
+def file_exists(filename: str, save_folder: str) -> bool:
+    """Check if a file already exists in the save folder."""
+    full_path = os.path.join(save_folder, filename)
+    return os.path.isfile(full_path)
+
 def download_file(url: str, filename: str, save_folder: str) -> None:
     """Download a file from a URL."""
+    if file_exists(filename, save_folder):
+        logger.info(f"File {filename} already exists in {save_folder}. Skipping download.")
+        return
+
     file_url = os.path.join(url, filename)
     # Log the file download initiation
     logger.info(f"Starting download of {filename} from {url}")

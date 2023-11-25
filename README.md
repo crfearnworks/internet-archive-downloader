@@ -24,4 +24,3 @@ This currently only supports files with a MKV or MP4 file extention.
 ## TO-DO
 - Make a chooser for different categories of file.
 - Pass login credentials.
-- Search the archive folder for files already downloaded and resume if a download was halted.
